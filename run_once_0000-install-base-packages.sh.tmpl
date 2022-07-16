@@ -1,0 +1,21 @@
+#!/bin/sh
+{{ if eq .chezmoi.os "linux" -}}
+    echo "Setting up shell"
+    sudo apt-get update && \
+      sudo apt-get install -y zsh fzf tmux exa && \
+        chsh -s $(which zsh)
+    if [ ! -d ".pyenv" ]; then
+      echo "Installing pyenv"
+      curl https://pyenv.run | bash
+    fi
+
+    echo "Installing docker completions"
+    mkdir -p ~/.zsh/completion && \
+    curl \
+        -L https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker \
+        -o ~/.zsh/completion/_docker && \
+    curl \
+      -L https://raw.githubusercontent.com/docker/compose/v2.6.1/contrib/completion/zsh/_docker-compose \
+      -o ~/.zsh/completion/_docker-compose
+{{ else }}
+{{ end }}
