@@ -1,0 +1,127 @@
+# ######## #
+# SETTINGS #
+# ######## #
+
+# TMUX
+CONFIG_TERM_LOCAL="tmux"
+
+# Disable COMPFIX warnings incase of dotfiles symlink
+ZSH_DISABLE_COMPFIX=true
+
+# Disable other compinits and setup zgen to finalize compdumps to homedir so it doesnt get synced to onedrive
+skip_global_compinit=1
+ZGEN_CUSTOM_COMPDUMP="$HOME/.compdump"
+
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+setopt appendhistory autocd
+bindkey -e
+# End of lines configured by zsh-newuser-install
+
+# Start prompt at button of window
+POWERLEVEL9K_INSTANT_PROMPT_COMMAND_LINES=0
+echo ${(pl.$LINES..\n.)}
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
+# init shell e.g. tmux as first source for speed so it can init the rest within itself
+source ".shellrc"
+
+# bind fancy autocomplete to ctrl + space
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of /mnt/c/Users/miste/OneDrive/dotfiles/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block, everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# The following lines were added by compinstall
+zstyle ':completion:*' completer _complete _ignored _approximate
+zstyle ':completion:*' max-errors 3
+zstyle ':completion:*' prompt '??'
+zstyle :compinstall filename ".zshrc"
+# End of lines added by compinstall
+
+# #### #
+# ZGEN #
+# #### #
+
+source "${ZDOTDIR}/.zgen/zgen.zsh"
+
+# if the init script doesn't exist
+if ! zgen saved; then
+
+  # auto update zgen regularly
+  zgen load unixorn/autoupdate-zgen
+
+  # remind aliases
+  zgen load djui/alias-tips
+  
+  # Powerline prompt
+  zgen load romkatv/powerlevel10k powerlevel10k
+
+  # pretty fish autocomplete
+  zgen load zsh-users/zsh-autosuggestions
+
+  # inline syntax hightlighting
+  zgen load zsh-users/zsh-syntax-highlighting
+
+
+  # Automatically 
+  zgen load zpm-zsh/autoenv
+
+  # zgen load heptiolabs/ktx 
+
+  # Python auto switch envs
+  # zgen load Tarrasch/zsh-autoenv
+
+  # load fzf autocomplete adds pretty option lists for commands
+  # zgen load lincheney/fzf-tab-completion zsh # Need to figure out how to stop error
+
+  # generate the init script from plugins above
+  zgen save
+fi
+
+[[ ! -f .helpers.zsh ]] || source ".helpers.zsh"
+
+# To customize prompt, run `p10k configure` or edit /mnt/c/Users/miste/OneDrive/dotfiles/.p10k.zsh.
+[[ ! -f .p10k.zsh ]] || source ".p10k.zsh"
+
+# Load personal aliases
+[[ ! -f .aliases.zsh ]] || source ".aliases.zsh"
+
+# oc auto complete
+#[ -x "$(command -v oc)" ] && source <(oc completion zsh)
+
+# preserve history
+setopt share_history
+
+# Load NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+#  Setup Pyenv
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+export PATH="$HOME/.pyenv/shims:$PATH"
+
+# Add mssql tools to path
+export PATH="$PATH:/opt/mssql-tools/bin"
+
+is_bin_in_path kubectl && source <(kubectl completion zsh)
+is_bin_in_path oc && source <(oc completion zsh)
+
+
