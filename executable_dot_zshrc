@@ -57,7 +57,7 @@ zstyle :compinstall filename ".zshrc"
 # ZGEN #
 # #### #
 
-source "${ZDOTDIR}/.zgen/zgen.zsh"
+source "$HOME/.zgen/zgen.zsh"
 
 # if the init script doesn't exist
 if ! zgen saved; then
@@ -81,6 +81,8 @@ if ! zgen saved; then
   # Automatically 
   zgen load zpm-zsh/autoenv
 
+  zgen oh-my-zsh docker docker-compose
+
   # zgen load heptiolabs/ktx 
 
   # Python auto switch envs
@@ -95,7 +97,7 @@ fi
 
 [[ ! -f .helpers.zsh ]] || source ".helpers.zsh"
 
-# To customize prompt, run `p10k configure` or edit /mnt/c/Users/miste/OneDrive/dotfiles/.p10k.zsh.
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f .p10k.zsh ]] || source ".p10k.zsh"
 
 # Load personal aliases
@@ -106,11 +108,6 @@ fi
 
 # preserve history
 setopt share_history
-
-# Load NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 #  Setup Pyenv
 export PATH="$HOME/.pyenv/bin:$PATH"
@@ -125,3 +122,6 @@ is_bin_in_path kubectl && source <(kubectl completion zsh)
 is_bin_in_path oc && source <(oc completion zsh)
 
 
+# setup volta
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
