@@ -1,0 +1,28 @@
+#!/bin/sh
+{{ if eq .chezmoi.os "linux" -}}
+if [ ! -x "$(command -v 'apt-fast')" ]; then
+echo "Setting up apt-fast"
+sudo add-apt-repository -y ppa:apt-fast/stable
+sudo apt-get update
+sudo apt-get -y install aria2 augtool
+DEBIAN_FRONTEND=noninteractive sudo apt-get -y install apt-fast
+sudo sh <<- EOF
+    echo debconf apt-fast/maxdownloads string 16 | debconf-set-selections
+    echo debconf apt-fast/dlflag boolean true | debconf-set-selections
+    echo debconf apt-fast/aptmanager string apt | debconf-set-selections
+EOF
+
+augtool << EOF
+# treat apt-fast.conf as a simplevars config
+transform simplevars incl /etc/apt-fast.conf
+# load into workspace
+load-file /etc/apt-fast.conf
+# set apt-fast mirrors
+set /files/etc/apt-fast.conf/MIRRORS '( "http://archive.ubuntu.com/ubuntu, http://www.mirrorservice.org/sites/archive.ubuntu.com/ubuntu/, http://mirrors.ukfast.co.uk/sites/archive.ubuntu.com/, http://mirror.vorboss.net/ubuntu-archive/, http://mirror.ox.ac.uk/sites/archive.ubuntu.com/ubuntu/, ftp://mirrors.ukfast.co.uk/archive.ubuntu.com/, ftp://ftp.mirrorservice.org/sites/archive.ubuntu.com/ubuntu/" )'
+save
+EOF
+else
+echo "apt-fast is installed"
+fi
+{{ else }}
+{{ end }}
