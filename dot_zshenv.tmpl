@@ -4,6 +4,15 @@ export ZSH_COMPDUMP=$HOME
 export DOCKER_HOST=tcp://localhost:2375
 export VISUAL="code --wait"
 export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
+
+cdpath=(\
+    ./ \
+    ~/projects \
+    {{- $pf := index . "projectfolder" -}}
+    {{- if $pf }}
+    {{ $pf | quote }} \
+    {{- end }}
+    )
 ssh() {
 tmux rename-window "$*"
 command ssh "$@"

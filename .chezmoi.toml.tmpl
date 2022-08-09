@@ -1,5 +1,7 @@
 {{- $email := promptString "email" -}}
 {{- $username := promptString "username" -}}
+{{- $projectFolder := promptString "Project Folder" -}}
 [data]
     email = {{ $email | quote }}
     username = {{ $username | quote }}
+    projectFolder = {{ $projectFolder | quote }}
