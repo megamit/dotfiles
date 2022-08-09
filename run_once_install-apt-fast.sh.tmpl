@@ -3,7 +3,7 @@
 if [ ! -x "$(command -v 'augtool')" ]; then
 echo "Setting up augtool"
     sudo apt-get update && \
-    sudo apt-get install augeas-tools
+    sudo apt-get -y install augeas-tools
 fi
 if [ ! -x "$(command -v 'apt-fast')" ]; then
 echo "Setting up apt-fast"
