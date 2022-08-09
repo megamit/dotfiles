@@ -1,11 +1,16 @@
 #!/bin/sh
 {{ if eq .chezmoi.os "linux" -}}
+if [ ! -x "$(command -v 'augtool')" ]; then
+echo "Setting up augtool"
+    sudo apt-get update && \
+    sudo apt-get install augeas-tools
+fi
 if [ ! -x "$(command -v 'apt-fast')" ]; then
 echo "Setting up apt-fast"
-sudo add-apt-repository -y ppa:apt-fast/stable
-sudo apt-get update
-sudo apt-get -y install aria2 augtool
-DEBIAN_FRONTEND=noninteractive sudo apt-get -y install apt-fast
+sudo add-apt-repository -y ppa:apt-fast/stable && \
+    sudo apt-get update
+    sudo apt-get -y install aria2 && \
+    sudo DEBIAN_FRONTEND=noninteractive apt-get -y install apt-fast
 sudo sh <<- EOF
     echo debconf apt-fast/maxdownloads string 16 | debconf-set-selections
     echo debconf apt-fast/dlflag boolean true | debconf-set-selections
