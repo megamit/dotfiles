@@ -1,7 +1,12 @@
 export skip_global_compinit=1
 export ZGEN_AUTOLOAD_COMPINIT=0
 export ZSH_COMPDUMP=$HOME
+{{ if eq .chezmoi.os "linux" -}}
+{{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
 export DOCKER_HOST=tcp://localhost:2375
+{{-   end -}}
+{{- end }}
+
 export VISUAL="code --wait"
 export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
 

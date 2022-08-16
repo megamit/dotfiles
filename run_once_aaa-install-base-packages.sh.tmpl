@@ -13,5 +13,17 @@
       echo "Installing pyenv"
       curl https://pyenv.run | bash
     fi
-{{ else }}
+{{ else if eq .chezmoi.os "darwin" -}}
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew bundle --no-lock --file=/dev/stdin <<EOF
+brew "git"
+cask "firefox"
+brew "jetbrains-toolbox"
+brew "fzf"
+brew "tmux"
+EOF
+if [ ! -d "$HOME/.pyenv" ]; then
+  echo "Installing pyenv"
+  curl https://pyenv.run | bash
+fi
 {{ end }}
