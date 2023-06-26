@@ -1,4 +1,5 @@
 #!/bin/sh
+PATH="$HOME/.local/bin/:$PATH"
 {{ if eq .chezmoi.os "linux" -}}
 if [ ! -x "$(command -v 'augtool')" ]; then
 echo "Setting up augtool"

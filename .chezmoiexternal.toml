@@ -1,3 +1,6 @@
-[".zgen"]
+# [".zgen"]
+#     type = "git-repo"
+#     url = "https://github.com/tarjoilija/zgen.git"
+[".zgenom"]
     type = "git-repo"
-    url = "https://github.com/tarjoilija/zgen.git"
+    url = "https://github.com/jandamm/zgenom.git"
