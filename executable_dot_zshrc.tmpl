@@ -2,17 +2,8 @@
 # SETTINGS #
 # ######## #
 
-# TODO: Switch to zgenom as zgen hasnt been updated for years
-
 # TMUX
 CONFIG_TERM_LOCAL="tmux"
-
-# Disable COMPFIX warnings incase of dotfiles symlink
-ZSH_DISABLE_COMPFIX=true
-
-# Disable other compinits and setup zgen to finalize compdumps to homedir so it doesnt get synced to onedrive
-skip_global_compinit=1
-ZGEN_CUSTOM_COMPDUMP="$HOME/.compdump"
 
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
@@ -55,48 +46,49 @@ zstyle ':completion:*' prompt '??'
 zstyle :compinstall filename ".zshrc"
 # End of lines added by compinstall
 
-# #### #
-# ZGEN #
-# #### #
+# ###### #
+# ZGENOM #
+# ###### #
 
-source "$HOME/.zgen/zgen.zsh"
+source "$HOME/.zgenom/zgenom.zsh"
+
+zgenom autoupdate
 
 # if the init script doesn't exist
-if ! zgen saved; then
-
-  # auto update zgen regularly
-  zgen load unixorn/autoupdate-zgen
+if ! zgenom saved; then
 
   # remind aliases
-  zgen load djui/alias-tips
+  zgenom load djui/alias-tips
   
   # Powerline prompt
-  zgen load romkatv/powerlevel10k powerlevel10k
+  zgenom load romkatv/powerlevel10k powerlevel10k
 
   # pretty fish autocomplete
-  zgen load zsh-users/zsh-autosuggestions
+  zgenom load zsh-users/zsh-autosuggestions
 
   # inline syntax hightlighting
-  zgen load zsh-users/zsh-syntax-highlighting
+  zgenom load zsh-users/zsh-syntax-highlighting
 
 
   # Automatically 
-  zgen load zpm-zsh/autoenv
+  zgenom load zpm-zsh/autoenv
 
   # load docker zsh completions
-  zgen load docker/cli contrib/completion/zsh
-  zgen load docker/compose contrib/completion/zsh
+  # zgenom load docker/cli contrib/completion/zsh
+  # zgenom load docker/compose contrib/completion/zsh
 
-  # zgen load heptiolabs/ktx 
+  # zgenom load heptiolabs/ktx 
 
   # Python auto switch envs
-  # zgen load Tarrasch/zsh-autoenv
+  # zgenom load Tarrasch/zsh-autoenv  
 
   # load fzf autocomplete adds pretty option lists for commands
-  # zgen load lincheney/fzf-tab-completion zsh # Need to figure out how to stop error
+  zgenom load lincheney/fzf-tab-completion zsh # Need to figure out how to stop error
 
   # generate the init script from plugins above
-  zgen save
+  zgenom save
+
+  zgenom compile "$HOME/.zshrc"
 fi
 
 [[ ! -f "$HOME/.helpers.zsh" ]] || source "$HOME/.helpers.zsh"

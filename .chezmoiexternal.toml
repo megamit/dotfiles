@@ -4,3 +4,6 @@
 [".zgenom"]
     type = "git-repo"
     url = "https://github.com/jandamm/zgenom.git"
+[".tmux/plugins/tpm"]
+    type = "git-repo"
+    url = "https://github.com/tmux-plugins/tpm"
